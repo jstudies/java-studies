@@ -1,4 +1,4 @@
-package edu.javacourse.grn;
+package edu.javacourse.zags;
 
 import java.util.Date;
 

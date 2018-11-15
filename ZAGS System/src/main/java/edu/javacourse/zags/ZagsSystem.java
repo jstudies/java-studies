@@ -1,11 +1,10 @@
-package edu.javacourse.grn;
+package edu.javacourse.zags;
 
 import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-import sun.java2d.pipe.SpanShapeRenderer;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
