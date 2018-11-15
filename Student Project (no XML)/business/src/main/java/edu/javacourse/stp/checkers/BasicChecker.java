@@ -57,13 +57,11 @@ public abstract class BasicChecker {
 
     private void connect() throws ConnectException {
         try {
-//            System.out.print(this.getClass().getSimpleName() + " is connecting to " + host + ":" + port+" // ");
             socket = new Socket(host, port);
         } catch (IOException e) {
             e.printStackTrace();
             throw new ConnectException(e.getMessage(), e);
         }
-//        System.out.print("OK");
     }
 
     protected abstract CheckAnswer sendAndGetData() throws SendGetDataException;

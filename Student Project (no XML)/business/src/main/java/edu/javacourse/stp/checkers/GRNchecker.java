@@ -2,14 +2,8 @@
  * Created by Dmitry Melnikov 2018.
  */
 
-/*
- * Created by Dmitry Melnikov 2018.
- */
-
 package edu.javacourse.stp.checkers;
 
-import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream;
 import edu.javacourse.stp.domain.Person;
 import edu.javacourse.stp.domain.answer.CheckAnswer;
 import edu.javacourse.stp.exception.SendGetDataException;
@@ -21,8 +15,9 @@ import javax.xml.stream.XMLStreamWriter;
 
 import java.io.*;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Properties;
+import java.util.*;
+//import java.util.Properties;
+
 
 public class GRNchecker extends BasicChecker {
 
@@ -33,17 +28,40 @@ public class GRNchecker extends BasicChecker {
     private static final String login;
     private static final String password;
 
-    static {
-        Properties pr = new Properties();
-        pr.loadFromXML();
+//    private static Map<String, String> settings = new HashMap<>();
 
-    }
-    {
+    static {
+
+//        Properties pr = new Properties();
+//        try {
+//            pr.load(new FileInputStream("grn_checker.properties"));
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        Locale lcl=new Locale("ru","RU","Mac"); // establish Locale
+
+        Locale lcl = new Locale("en", "US", "Mac");
+
+        PropertyResourceBundle pr = (PropertyResourceBundle)
+                PropertyResourceBundle.getBundle("grn_checker", lcl); // use properties file and locale
+
+//        settings.put("host", pr.getString("grn.host")); // works with Map
+//        settings.put("port", pr.getString("grn.port"));
+//        settings.put("login", pr.getString("grn.login"));
+//        settings.put("password", pr.getString("grn.password"));
+
+
+        host = pr.getString("grn.host");
+        port = Integer.parseInt(pr.getString("grn.port"));
+        login = pr.getString("grn.login");
+        password = pr.getString("grn.password");
+        String lng = pr.getString("grn.test");
+        System.out.println(lng);
+        System.out.println("Host:port - " + host + ":" + port + " // login - " + login + " // password - " + password);
 
     }
 
     private Person person;
-
 
 
     public GRNchecker() { // get connection parameters
@@ -83,7 +101,7 @@ public class GRNchecker extends BasicChecker {
     }
 
     private String buildXmlForPerson() throws UnsupportedEncodingException, XMLStreamException {
-        ByteOutputStream bos = new ByteOutputStream();
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
         XMLOutputFactory factory = XMLOutputFactory.newFactory();
         XMLStreamWriter xml = factory.createXMLStreamWriter(bos);
@@ -108,7 +126,7 @@ public class GRNchecker extends BasicChecker {
         xml.writeEndElement();
         xml.writeEndDocument();
 
-        String answer = new String(bos.getBytes(), 0, bos.getCount(), "UTF-8");
+        String answer = new String(bos.toByteArray(), 0, bos.size(), "UTF-8");
         return answer;
     }
 

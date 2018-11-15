@@ -67,18 +67,18 @@ public class ProcessStarter {
 
     private List<CheckAnswer> checkGRN(StudentOrder so) throws CheckException {
         List<CheckAnswer> answers = new ArrayList<>(); // create list for answers
-        GRNchecker grn = new GRNchecker("localhost", 7777, "3", "4"); // create checker
+        GRNchecker grn = new GRNchecker(); // create checker
 
-//        System.out.println("checkGRN starting check");
+
 
         grn.setPerson(so.getHusband());
         answers.add(grn.check());
-//        grn.setPerson(so.getWife());
-//        answers.add(grn.check());
-//        for (PersonChild pc : so.getChildren()) {
-//            grn.setPerson(pc);
-//            answers.add(grn.check());
-//        }
+        grn.setPerson(so.getWife());
+        answers.add(grn.check());
+        for (PersonChild pc : so.getChildren()) {
+            grn.setPerson(pc);
+            answers.add(grn.check());
+        }
 
         return answers;
     }

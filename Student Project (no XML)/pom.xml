@@ -3,9 +3,6 @@
   ~ Created by Dmitry Melnikov 2018.
   -->
 
-<!--
-  ~ Created by Dmitry Melnikov 2018.
-  -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -15,7 +12,7 @@
     <groupId>edu.javacourse.stp</groupId>
     <artifactId>student-project</artifactId>
     <packaging>pom</packaging>
-    <version>9.0-SNAPSHOT</version>
+    <version>11.1-SNAPSHOT</version>
     <modules>
         <module>business</module>
         <module>common-types</module>
