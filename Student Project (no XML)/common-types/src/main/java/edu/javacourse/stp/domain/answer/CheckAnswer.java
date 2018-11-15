@@ -10,6 +10,7 @@ package edu.javacourse.stp.domain.answer;
 
 public interface CheckAnswer {
     boolean getResult();
+
     String getMessage();
 
 }

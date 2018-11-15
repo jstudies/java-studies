@@ -31,11 +31,11 @@ public class ProcessStarter {
     }
 
     public void processList() {
-        System.out.println("processList: OK");
+//        System.out.println("processList: OK");
         StudentOrderDataSource ds = FactoryDataSource.getDataSource();
         List<StudentOrder> orderList = ds.getStudentOrders();
         for (StudentOrder so : orderList) {
-            System.out.println("prcoessStudentOrder called");
+//            System.out.println("prcoessStudentOrder called");
             processStudentOrder(so); // for every element in the created list process the following function
         }
     }
@@ -44,7 +44,7 @@ public class ProcessStarter {
         List<CheckAnswer> answers = new ArrayList<>(); // creating the list of answers; TODO Make it return answers as list and put it in the file
 
         try {
-            System.out.println("calling for checkGRN");
+//            System.out.println("calling for checkGRN");
             answers.addAll(checkGRN(so));
 //            answers.addAll(checkZAGS(so));
 //            answers.addAll(checkStudents(so));
@@ -60,7 +60,7 @@ public class ProcessStarter {
                 return;
             }
         }
-         am.approveOrder (so, answers);
+        am.approveOrder(so, answers);
     }
 
     // -------- FUNCTIONS -------
@@ -69,7 +69,7 @@ public class ProcessStarter {
         List<CheckAnswer> answers = new ArrayList<>(); // create list for answers
         GRNchecker grn = new GRNchecker("localhost", 7777, "3", "4"); // create checker
 
-        System.out.println("checkGRN starting check");
+//        System.out.println("checkGRN starting check");
 
         grn.setPerson(so.getHusband());
         answers.add(grn.check());

@@ -29,10 +29,6 @@ public class ZAGSchecker extends BasicChecker {
 
     @Override
     protected CheckAnswer sendAndGetData() throws SendGetDataException {
-        if (Math.random() < LEVEL) {
-            SendGetDataException se = new SendGetDataException("sendAndGetData error (ZAGS)");
-            throw se;
-        }
         if (child == null) {
             return checkWedding();
         } else {

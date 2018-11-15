@@ -25,10 +25,6 @@ public class StudentChecker extends BasicChecker {
     }
 
     protected CheckAnswer sendAndGetData() throws SendGetDataException {
-        if (Math.random() < LEVEL) {
-            SendGetDataException se = new SendGetDataException("sendGetData error (Students)");
-            throw se;
-        }
         return new BasicCheckerAnswer(true, "SC // " + person.getSurName() + ", " + person.getGivenName());
     }
 }

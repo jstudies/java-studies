@@ -22,12 +22,31 @@ import javax.xml.stream.XMLStreamWriter;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Properties;
 
 public class GRNchecker extends BasicChecker {
 
+// all static assigned first hand on loading of the class
+
+    private static final String host; // static == set once for the class for all possible instances
+    private static final int port;
+    private static final String login;
+    private static final String password;
+
+    static {
+        Properties pr = new Properties();
+        pr.loadFromXML();
+
+    }
+    {
+
+    }
+
     private Person person;
 
-    public GRNchecker(String host, int port, String login, String password) { // get connection parameters
+
+
+    public GRNchecker() { // get connection parameters
         super(host, port, login, password); // send it to super BasicChecker
     }
 
@@ -41,8 +60,6 @@ public class GRNchecker extends BasicChecker {
             StringBuilder sb = new StringBuilder(buildXmlForPerson());
             os.write(sb.toString().getBytes());
             os.flush();
-            System.out.println("reply: ");
-            System.out.println("--");
 
             StringBuilder sr = new StringBuilder(); // create new string
             Reader br = new InputStreamReader(socket.getInputStream()); // buffer reader form the IS from the socket, which get IS
@@ -56,17 +73,13 @@ public class GRNchecker extends BasicChecker {
                 count = br.read(request);
             }
 
-            System.out.println(sr); // show what's read
-
-            System.out.println("--");
-            CheckAnswer answer = new BasicCheckerAnswer(true, "MESSAGE");
+            CheckAnswer answer = buildAnswer(sr.toString());
             return answer;
 
         } catch (IOException | XMLStreamException e) {
             e.printStackTrace();
             throw new SendGetDataException(e.getMessage());
         }
-
     }
 
     private String buildXmlForPerson() throws UnsupportedEncodingException, XMLStreamException {
@@ -76,26 +89,42 @@ public class GRNchecker extends BasicChecker {
         XMLStreamWriter xml = factory.createXMLStreamWriter(bos);
 
         xml.writeStartDocument();
-            xml.writeStartElement("person");
+        xml.writeStartElement("person");
 
-                xml.writeStartElement("surName");
-                    xml.writeCharacters(person.getSurName());
-                xml.writeEndElement();
-                xml.writeStartElement("givenName");
-                    xml.writeCharacters(person.getGivenName());
-                xml.writeEndElement();
-                xml.writeStartElement("patronymic");
-                    xml.writeCharacters(person.getPatronymic());
-                xml.writeEndElement();
-                xml.writeStartElement("dateOfBirth");
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
-                    xml.writeCharacters(sdf.format(new Date()));
-                xml.writeEndElement();
+        xml.writeStartElement("surName");
+        xml.writeCharacters(person.getSurName());
+        xml.writeEndElement();
+        xml.writeStartElement("givenName");
+        xml.writeCharacters(person.getGivenName());
+        xml.writeEndElement();
+        xml.writeStartElement("patronymic");
+        xml.writeCharacters(person.getPatronymic());
+        xml.writeEndElement();
+        xml.writeStartElement("dateOfBirth");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+        xml.writeCharacters(sdf.format(new Date()));
+        xml.writeEndElement();
 
-            xml.writeEndElement();
+        xml.writeEndElement();
         xml.writeEndDocument();
 
-        String answer=new String(bos.getBytes(),0,bos.getCount(),"UTF-8");
+        String answer = new String(bos.getBytes(), 0, bos.getCount(), "UTF-8");
+        return answer;
+    }
+
+    private CheckAnswer buildAnswer(String s) {
+        int r1 = s.indexOf("<result>");
+        int r2 = s.indexOf("</result>");
+        int m1 = s.indexOf("<message>");
+        int m2 = s.indexOf("</message>");
+
+        Boolean result = Boolean.parseBoolean(s.substring(r1 + "<result>".length(), r2));
+        String message = s.substring(m1 + "<message>".length(), m2);
+
+        System.out.println("result: " + result);
+        System.out.println("message: " + message);
+
+        BasicCheckerAnswer answer = new BasicCheckerAnswer(result, message);
         return answer;
     }
 }

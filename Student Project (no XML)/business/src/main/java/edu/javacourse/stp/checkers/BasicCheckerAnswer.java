@@ -29,4 +29,12 @@ public class BasicCheckerAnswer implements CheckAnswer {
     public String getMessage() {
         return message;
     }
+
+    @Override
+    public String toString() {
+        return "BasicCheckerAnswer{" +
+                "result=" + result +
+                ", message='" + message + '\'' +
+                '}';
+    }
 }

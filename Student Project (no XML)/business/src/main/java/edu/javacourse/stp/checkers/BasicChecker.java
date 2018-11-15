@@ -18,8 +18,6 @@ import java.net.Socket;
 
 public abstract class BasicChecker {
 
-    protected final static double LEVEL = 0.01; // set randomizer level
-
     public static final String ERROR = "\u001B[31m"; // ERROR colour
     public static final String ERROR_END = "\u001B[0m"; // REG colour
 
@@ -40,10 +38,10 @@ public abstract class BasicChecker {
     public CheckAnswer check() throws CheckException { // function to check answers
         try {
             connect();
-            System.out.println(" // my port: "+ socket.getLocalPort());
+//            System.out.println(" // my port: "+ socket.getLocalPort());
 
             try {
-                System.out.print("sending request..." + "\n");
+//                System.out.print("sending request..." + "\n");
                 CheckAnswer result = sendAndGetData();
                 return result;
             } catch (SendGetDataException e) {
@@ -59,24 +57,24 @@ public abstract class BasicChecker {
 
     private void connect() throws ConnectException {
         try {
-            System.out.print(this.getClass().getSimpleName() + " is connecting to " + host + ":" + port+" // ");
+//            System.out.print(this.getClass().getSimpleName() + " is connecting to " + host + ":" + port+" // ");
             socket = new Socket(host, port);
         } catch (IOException e) {
             e.printStackTrace();
             throw new ConnectException(e.getMessage(), e);
         }
-        System.out.print("OK");
+//        System.out.print("OK");
     }
 
     protected abstract CheckAnswer sendAndGetData() throws SendGetDataException;
 
     private void disconnect() throws ConnectException {
-        try{
+        try {
             socket.close();
-            System.out.println("connection closed.");
-        } catch (IOException e){
+//            System.out.println("connection closed.");
+        } catch (IOException e) {
             e.printStackTrace();
-            throw new ConnectException(e.getMessage(),e);
+            throw new ConnectException(e.getMessage(), e);
         }
     }
 }
