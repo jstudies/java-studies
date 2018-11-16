@@ -4,32 +4,28 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Starter {
-
-
     public static void main(String[] args) throws InterruptedException {
-        List<MyThread> list = new ArrayList<>();
+        List<MyRunnable> list = new ArrayList<>();
         for (int i = 0; i < 5; i++) {
-            MyThread mt = new MyThread("Name: " + i);
-            mt.start();
+            MyRunnable mt = new MyRunnable("Name: " + i);
+            Thread t=new Thread(mt);
+            t.start();
             list.add(mt);
         }
         System.out.println("Started");
         Thread.sleep(1000);
-        for (MyThread mt:list){
+        for (MyRunnable mt : list) {
             mt.stopThread();
-//            System.out.println("Stopped");
         }
         annonExample();
     }
-
     private static void annonExample(){
-        Thread t= new Thread(){
+        Runnable r = new Runnable() {
             @Override
-            public void run(){ // annonymous class, or inline class
+            public void run() {
                 System.out.println("Annonymous");
             }
         };
-        t.start();
-        System.out.println(t.getClass().getCanonicalName());
+        new Thread(r).start();
     }
 }

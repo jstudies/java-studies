@@ -28,7 +28,7 @@ public class ProcessStarter {
         t.processList(); // start the process
     }
 
-    public void processList() {
+    private void processList() {
         StudentOrderDataSource ds = FactoryDataSource.getDataSource();
         List<StudentOrder> orderList = ds.getStudentOrders();
         for (StudentOrder so : orderList) {
@@ -43,10 +43,10 @@ public class ProcessStarter {
         try {
             System.out.print("\n"+"Check GRN: ");
             answers.addAll(checkGRN(so));
-            System.out.print("\n"+"Check ZAGS: ");
-            answers.addAll(checkZAGS(so));
-            System.out.print("\n"+"Check Students: ");
-            answers.addAll(checkStudents(so));
+//            System.out.print("\n"+"Check ZAGS: ");
+//            answers.addAll(checkZAGS(so));
+//            System.out.print("\n"+"Check Students: ");
+//            answers.addAll(checkStudents(so));
         } catch (CheckException e) {
             // TODO Make Exception processing
             return;
@@ -71,6 +71,7 @@ public class ProcessStarter {
         grn.setPerson(so.getHusband());
         System.out.print("Husband // ");
         answers.add(grn.check());
+
         grn.setPerson(so.getWife());
         System.out.print("           Wife // ");
         answers.add(grn.check());
