@@ -2,7 +2,7 @@ package edu.javacourse.zags;
 
 import java.util.Date;
 
-public class GrnPerson  {
+public class ZagsPerson  {
 
     private String surName;
     private String givenName;
@@ -43,7 +43,7 @@ public class GrnPerson  {
 
     @Override
     public String toString() {
-        return "GrnPerson{" +
+        return "ZagsPerson{" +
                 "surName='" + surName + '\'' +
                 ", givenName='" + givenName + '\'' +
                 ", patronymic='" + patronymic + '\'' +

@@ -1,6 +1,5 @@
 package edu.javacourse.zags;
 
-import com.sun.xml.internal.messaging.saaj.util.ByteInputStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -13,15 +12,15 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.text.SimpleDateFormat;
 
-public class GrnSystem {
+public class ZagsSystem {
     public static void main(String[] args) {
-        GrnSystem grn = new GrnSystem();
+        ZagsSystem grn = new ZagsSystem();
         grn.start();
     }
 
     private void start() {
         try {
-            ServerSocket ses = new ServerSocket(7777); // setup incoming socket
+            ServerSocket ses = new ServerSocket(7779); // setup incoming socket
 
             System.out.println(this.getClass() + " is listening at " + ses);
             System.out.println("\n");
@@ -46,25 +45,29 @@ public class GrnSystem {
         int count = br.read(request); // count qty of data inside the "request"
         while (count != -1) { // while counter of bytes is not negative, do
             sb.append(new String(request, 0, count));
-            if (sb.toString().endsWith("</person>")) {
+            if (sb.toString().endsWith("</marriage>") | sb.toString().endsWith("</child-check>")) {
                 break;
             }
             count = br.read(request);
         }
-
+        if (sb.toString().endsWith("</marriage>")){
+            System.out.println("Requested: 'marriage status'");
+        } else if (sb.toString().endsWith("</child-check>")){
+            System.out.println("Requested: 'children status'");
+        }
         System.out.println(sb.toString()); // show what's read
         System.out.println("---");
         boolean result;
         String message;
         try {
-            GrnPerson person = buildPerson(sb.toString()); // calling for GrnPerson, sending sb.toString(), requesting 'person'
-            System.out.println(person);
+            ZagsPerson person = buildPerson(sb.toString()); // calling for ZagsPerson, sending sb.toString(), requesting 'person'
+            System.out.println("Checking: "+ person+"\n");
             result=checkPerson(person);
-            message = "CONFIRMED";
+            message = "ZAGS @ CONFIRMED";
         } catch (Exception e) {
             e.printStackTrace();
             result = false;
-            message = "GRN System ERROR: " + e.getMessage();
+            message = "ZAGS System ERROR: " + e.getMessage();
         }
         OutputStream os = socket.getOutputStream(); // stream to be sent through socket
         os.write(("<?xml version=\"1.0\" ?><answer>" +
@@ -74,15 +77,15 @@ public class GrnSystem {
         socket.close();
     }
 
-    private boolean checkPerson(GrnPerson person) {
+    private boolean checkPerson(ZagsPerson person) {
         return true;
     }
 
-    private GrnPerson buildPerson(String s) throws Exception {
+    private ZagsPerson buildPerson(String s) throws Exception {
         byte[] buffer = s.getBytes();
-        ByteInputStream bis = new ByteInputStream(buffer, buffer.length);
+        ByteArrayInputStream bis = new ByteArrayInputStream(buffer);
 
-        GrnPerson person = new GrnPerson();
+        ZagsPerson person = new ZagsPerson();
 
         DocumentBuilder builder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
         Document doc = builder.parse(bis);

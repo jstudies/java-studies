@@ -35,8 +35,9 @@ public class ApproveManager {
             FileInputStream fis = new FileInputStream("student.txt");
             ObjectInputStream ois = new ObjectInputStream(fis);
             StudentOrder so1 = (StudentOrder) ois.readObject();
-//            System.out.println("\n" + "------- FILE ------" + "\n");
-//            System.out.println(so1.getHusband().getGivenName());
+
+            System.out.println("\n" + "------- APPROVED ------" + "\n");
+
             ois.close();
             fis.close();
         } catch (Exception e) {

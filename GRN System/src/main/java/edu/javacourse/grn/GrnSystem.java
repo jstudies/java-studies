@@ -59,9 +59,9 @@ public class GrnSystem {
         String message;
         try {
             GrnPerson person = buildPerson(sb.toString()); // calling for GrnPerson, sending sb.toString(), requesting 'person'
-            System.out.println(person);
+            System.out.println("Checking: "+ person+"\n");
             result=checkPerson(person);
-            message = "CONFIRMED";
+            message = "GRN @ CONFIRMED";
         } catch (Exception e) {
             e.printStackTrace();
             result = false;

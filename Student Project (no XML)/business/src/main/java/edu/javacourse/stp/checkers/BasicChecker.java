@@ -38,10 +38,7 @@ public abstract class BasicChecker {
     public CheckAnswer check() throws CheckException { // function to check answers
         try {
             connect();
-//            System.out.println(" // my port: "+ socket.getLocalPort());
-
             try {
-//                System.out.print("sending request..." + "\n");
                 CheckAnswer result = sendAndGetData();
                 return result;
             } catch (SendGetDataException e) {
@@ -69,7 +66,6 @@ public abstract class BasicChecker {
     private void disconnect() throws ConnectException {
         try {
             socket.close();
-//            System.out.println("connection closed.");
         } catch (IOException e) {
             e.printStackTrace();
             throw new ConnectException(e.getMessage(), e);

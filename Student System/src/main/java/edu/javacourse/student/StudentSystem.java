@@ -20,7 +20,7 @@ public class StudentSystem {
 
     private void start() {
         try {
-            ServerSocket ses = new ServerSocket(7777); // setup incoming socket
+            ServerSocket ses = new ServerSocket(7778); // setup incoming socket
 
             System.out.println(this.getClass() + " is listening at " + ses);
             System.out.println("\n");
@@ -59,7 +59,7 @@ public class StudentSystem {
             StudentPerson person = buildPerson(sb.toString()); // calling for StudentPerson, sending sb.toString(), requesting 'person'
             System.out.println(person);
             result=checkPerson(person);
-            message = "CONFIRMED";
+            message = "Students @ CONFIRMED";
         } catch (Exception e) {
             e.printStackTrace();
             result = false;

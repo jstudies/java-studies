@@ -8,7 +8,6 @@ import edu.javacourse.stp.domain.Person;
 import edu.javacourse.stp.domain.answer.CheckAnswer;
 import edu.javacourse.stp.exception.SendGetDataException;
 
-
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
@@ -16,8 +15,6 @@ import javax.xml.stream.XMLStreamWriter;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
-//import java.util.Properties;
-
 
 public class GRNchecker extends BasicChecker {
 
@@ -28,41 +25,21 @@ public class GRNchecker extends BasicChecker {
     private static final String login;
     private static final String password;
 
-//    private static Map<String, String> settings = new HashMap<>();
-
     static {
-
-//        Properties pr = new Properties();
-//        try {
-//            pr.load(new FileInputStream("grn_checker.properties"));
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        Locale lcl=new Locale("ru","RU","Mac"); // establish Locale
-
         Locale lcl = new Locale("en", "US", "Mac");
 
         PropertyResourceBundle pr = (PropertyResourceBundle)
                 PropertyResourceBundle.getBundle("grn_checker", lcl); // use properties file and locale
 
-//        settings.put("host", pr.getString("grn.host")); // works with Map
-//        settings.put("port", pr.getString("grn.port"));
-//        settings.put("login", pr.getString("grn.login"));
-//        settings.put("password", pr.getString("grn.password"));
-
-
         host = pr.getString("grn.host");
         port = Integer.parseInt(pr.getString("grn.port"));
         login = pr.getString("grn.login");
         password = pr.getString("grn.password");
-        String lng = pr.getString("grn.test");
-        System.out.println(lng);
-        System.out.println("Host:port - " + host + ":" + port + " // login - " + login + " // password - " + password);
-
+//        String lng = pr.getString("grn.test");
+//        System.out.println(lng);
     }
 
     private Person person;
-
 
     public GRNchecker() { // get connection parameters
         super(host, port, login, password); // send it to super BasicChecker
@@ -76,12 +53,13 @@ public class GRNchecker extends BasicChecker {
         try {
             OutputStream os = socket.getOutputStream(); // stream to be sent
             StringBuilder sb = new StringBuilder(buildXmlForPerson());
+
             os.write(sb.toString().getBytes());
             os.flush();
 
             StringBuilder sr = new StringBuilder(); // create new string
             Reader br = new InputStreamReader(socket.getInputStream()); // buffer reader form the IS from the socket, which get IS
-            char[] request = new char[6];
+            char[] request = new char[256];
             int count = br.read(request);
             while (count != -1) { // while counter of bytes is not negative, do
                 sr.append(new String(request, 0, count));
@@ -90,7 +68,6 @@ public class GRNchecker extends BasicChecker {
                 }
                 count = br.read(request);
             }
-
             CheckAnswer answer = buildAnswer(sr.toString());
             return answer;
 
@@ -139,8 +116,7 @@ public class GRNchecker extends BasicChecker {
         Boolean result = Boolean.parseBoolean(s.substring(r1 + "<result>".length(), r2));
         String message = s.substring(m1 + "<message>".length(), m2);
 
-        System.out.println("result: " + result);
-        System.out.println("message: " + message);
+        System.out.print("message (" + message+") // "+result+"\n");
 
         BasicCheckerAnswer answer = new BasicCheckerAnswer(result, message);
         return answer;

@@ -6,9 +6,7 @@
  * Created by Dmitry Melnikov 2018.
  */
 
-package edu.javacourse.stp.exception;/*
- * Created by Dmitry Melnikov 2018.
- */
+package edu.javacourse.stp.exception;
 
 public class ConnectException extends Exception {
     public ConnectException(String message) {

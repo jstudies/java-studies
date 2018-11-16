@@ -4,8 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>edu.javacourse.grn</groupId>
-    <artifactId>grn-system</artifactId>
+    <groupId>edu.javacourse.zags</groupId>
+    <artifactId>zags-system</artifactId>
     <version>1.0</version>
 
 
