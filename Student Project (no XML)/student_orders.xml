@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ Created by Dmitry Melnikov 2018.
-  -->
-
-<student-orders xmlns:xsi="http://www.w3.org/2007/XMLSchema-versioning"
-                xsi:noNamespaceSchemaLocation="scheme.xsd">
+<student-orders>
     <student-order so-id="1">
         <wife>
             <surName>Петрова</surName>
