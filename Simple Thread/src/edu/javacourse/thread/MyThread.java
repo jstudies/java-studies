@@ -3,8 +3,11 @@ package edu.javacourse.thread;
 public class MyThread extends Thread {
 
     private String ThreadName;
-    public MyThread(String threadName){
-        this.ThreadName=threadName;
+    private volatile boolean running = true;
+
+
+    public MyThread(String threadName) {
+        this.ThreadName = threadName;
     }
 
     public String getThreadName() {
@@ -15,15 +18,16 @@ public class MyThread extends Thread {
         ThreadName = threadName;
     }
 
-//    int i=0;
+    public void stopThread() {
+        running = false;
+    }
+
     @Override
     public void run() {
-        while (true) {
-//            System.out.println("Hello "+i+"("+this.getId()+")");
-            System.out.println("Hello: "+ThreadName);
-//            i=i+1;
+        while (running) {
+            System.out.println("Hello: " + ThreadName);
             try {
-                Thread.sleep(1000);
+                Thread.sleep(100);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }

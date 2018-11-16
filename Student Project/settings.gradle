@@ -1,0 +1,6 @@
+rootProject.name = 'student-project'
+include ':business'
+include ':common-types'
+
+project(':business').projectDir = "$rootDir/business" as File
+project(':common-types').projectDir = "$rootDir/common-types" as File
