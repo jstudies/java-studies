@@ -15,8 +15,9 @@ import javax.xml.stream.XMLStreamWriter;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.Callable;
 
-public class StudentChecker extends BasicChecker {
+public class StudentChecker extends BasicChecker implements Callable<CheckAnswer> {
 
     private static final String host;
     private static final int port;
@@ -34,12 +35,18 @@ public class StudentChecker extends BasicChecker {
 
     private Person person;
 
-    public StudentChecker() {
+    public StudentChecker(Person person) {
         super(host, port, login, password);
+        this.person=person;
     }
 
     public void setPerson(Person person) {
         this.person = person;
+    }
+
+    @Override
+    public CheckAnswer call() throws Exception {
+        return check();
     }
 
     protected CheckAnswer sendAndGetData() throws SendGetDataException {
@@ -62,6 +69,7 @@ public class StudentChecker extends BasicChecker {
                 count = br.read(request);
             }
             CheckAnswer answer = buildAnswer(sr.toString());
+            System.out.println(answer);
             return answer;
 
         } catch (IOException | XMLStreamException e) {
@@ -108,8 +116,6 @@ public class StudentChecker extends BasicChecker {
 
         Boolean result = Boolean.parseBoolean(s.substring(r1 + "<result>".length(), r2));
         String message = s.substring(m1 + "<message>".length(), m2);
-
-        System.out.print("message (" + message + ") // " + result + "\n");
 
         BasicCheckerAnswer answer = new BasicCheckerAnswer(result, message);
         return answer;

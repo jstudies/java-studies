@@ -44,11 +44,11 @@ public class ProcessStarter {
         List<CheckAnswer> answers = new ArrayList<>(); // creating the list of answers; TODO Make it return answers as list and put it in the file
 
         try {
-            System.out.print("\n" + "Check GRN: ");
+            System.out.print("\n" + "Check GRN: " + "\n");
             answers.addAll(checkGRN(so));
-            System.out.print("\n"+"Check ZAGS: ");
+            System.out.print("\n" + "Check ZAGS: " + "\n");
             answers.addAll(checkZAGS(so));
-            System.out.print("\n"+"Check Students: ");
+            System.out.print("\n" + "Check Students: " + "\n");
             answers.addAll(checkStudents(so));
         } catch (CheckException e) {
             // TODO Make Exception processing
@@ -76,7 +76,6 @@ public class ProcessStarter {
 
         GRNchecker grnH = new GRNchecker(so.getHusband());
         result.add(es.submit(grnH));
-
         GRNchecker grnW = new GRNchecker(so.getWife());
         result.add(es.submit(grnW));
 
@@ -100,33 +99,48 @@ public class ProcessStarter {
 
     private List<CheckAnswer> checkZAGS(StudentOrder so) throws CheckException {
         List<CheckAnswer> answers = new ArrayList<>();
-        ZAGSchecker zc = new ZAGSchecker();
+        ExecutorService es = Executors.newFixedThreadPool(10);
+        List<Future<CheckAnswer>> result = new ArrayList<>();
 
-        zc.setParameters(so.getHusband(), so.getWife(), null);
-        System.out.print("Husband+Wife // ");
-        answers.add(zc.check());
-
+        ZAGSchecker zM = new ZAGSchecker(so.getHusband(), so.getWife(),null);
+        result.add(es.submit(zM));
 
         for (PersonChild pc : so.getChildren()) {
-            zc.setParameters(so.getHusband(), so.getWife(), pc);
-            System.out.print("            Child // ");
-            answers.add(zc.check());
+            ZAGSchecker zC = new ZAGSchecker(so.getHusband(), so.getWife(), pc);
+            result.add(es.submit(zC));
         }
-
+        for (Future<CheckAnswer> f : result) { //convert result list to answer list
+            try {
+                CheckAnswer answer = f.get();
+                answers.add(answer);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        es.shutdown();
         return answers;
     }
 
     private List<CheckAnswer> checkStudents(StudentOrder so) throws CheckException {
         List<CheckAnswer> answers = new ArrayList<>();
-        StudentChecker sc = new StudentChecker();
 
-        sc.setPerson(so.getHusband());
-        System.out.print("Husband // ");
-        answers.add(sc.check());
-        sc.setPerson(so.getWife());
-        System.out.print("                Wife // ");
-        answers.add(sc.check());
+        ExecutorService es = Executors.newFixedThreadPool(10);
+        List<Future<CheckAnswer>> result = new ArrayList<>();
 
+        StudentChecker scH = new StudentChecker(so.getHusband());
+        result.add(es.submit(scH));
+        StudentChecker scW = new StudentChecker(so.getWife());
+        result.add(es.submit(scW));
+
+        for (Future<CheckAnswer> f : result) {
+            try {
+                CheckAnswer answer = f.get();
+                answers.add(answer);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        es.shutdown();
         return answers;
     }
 }

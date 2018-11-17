@@ -19,8 +19,9 @@ import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.PropertyResourceBundle;
+import java.util.concurrent.Callable;
 
-public class ZAGSchecker extends BasicChecker {
+public class ZAGSchecker extends BasicChecker implements Callable<CheckAnswer> {
 
     private static final String host;
     private static final int port;
@@ -40,14 +41,21 @@ public class ZAGSchecker extends BasicChecker {
     private Person wife;
     private Person child;
 
-    public ZAGSchecker() {
+    public ZAGSchecker(Person husband, Person wife, Person child) {
         super(host, port, login, password);
+        this.husband=husband;
+        this.wife=wife;
+        this.child=child;
     }
 
     public void setParameters(Person husband, Person wife, Person child) {
         this.husband = husband;
         this.wife = wife;
         this.child = child;
+    }
+    @Override
+    public CheckAnswer call() throws Exception {
+        return check();
     }
 
     protected CheckAnswer sendAndGetData() throws SendGetDataException {
