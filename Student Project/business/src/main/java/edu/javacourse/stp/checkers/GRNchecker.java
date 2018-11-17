@@ -6,6 +6,7 @@ package edu.javacourse.stp.checkers;
 
 import edu.javacourse.stp.domain.Person;
 import edu.javacourse.stp.domain.answer.CheckAnswer;
+import edu.javacourse.stp.exception.CheckException;
 import edu.javacourse.stp.exception.SendGetDataException;
 
 import javax.xml.stream.XMLOutputFactory;
@@ -15,10 +16,12 @@ import javax.xml.stream.XMLStreamWriter;
 import java.io.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.concurrent.Callable;
 
-public class GRNchecker extends BasicChecker {
+public class GRNchecker extends BasicChecker implements Callable<CheckAnswer> {
 
 // all static assigned first hand on loading of the class
+
 
     private static final String host; // static == set once for the class for all possible instances
     private static final int port;
@@ -41,12 +44,18 @@ public class GRNchecker extends BasicChecker {
 
     private Person person;
 
-    public GRNchecker() { // get connection parameters
+    public GRNchecker(Person person) { // get connection parameters
         super(host, port, login, password); // send it to super BasicChecker
+        this.person = person;
     }
 
     public void setPerson(Person person) {
         this.person = person; // set the person
+    }
+
+    @Override
+    public CheckAnswer call() throws Exception {
+        return check();
     }
 
     protected CheckAnswer sendAndGetData() throws SendGetDataException {
@@ -69,6 +78,7 @@ public class GRNchecker extends BasicChecker {
                 count = br.read(request);
             }
             CheckAnswer answer = buildAnswer(sr.toString());
+            System.out.println(answer);
             return answer;
 
         } catch (IOException | XMLStreamException e) {
@@ -116,9 +126,9 @@ public class GRNchecker extends BasicChecker {
         Boolean result = Boolean.parseBoolean(s.substring(r1 + "<result>".length(), r2));
         String message = s.substring(m1 + "<message>".length(), m2);
 
-        System.out.print("message (" + message+") // "+result+"\n");
-
         BasicCheckerAnswer answer = new BasicCheckerAnswer(result, message);
         return answer;
     }
+
+
 }

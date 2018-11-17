@@ -20,6 +20,9 @@ import edu.javacourse.stp.exception.CheckException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class ProcessStarter {
     public static void main(String[] args) {
@@ -41,7 +44,7 @@ public class ProcessStarter {
         List<CheckAnswer> answers = new ArrayList<>(); // creating the list of answers; TODO Make it return answers as list and put it in the file
 
         try {
-            System.out.print("\n"+"Check GRN: ");
+            System.out.print("\n" + "Check GRN: ");
             answers.addAll(checkGRN(so));
 //            System.out.print("\n"+"Check ZAGS: ");
 //            answers.addAll(checkZAGS(so));
@@ -59,6 +62,7 @@ public class ProcessStarter {
                 return;
             }
         }
+//        System.out.println("so: "+so+" // "+answers);
         am.approveOrder(so, answers);
     }
 
@@ -66,23 +70,32 @@ public class ProcessStarter {
 
     private List<CheckAnswer> checkGRN(StudentOrder so) throws CheckException {
         List<CheckAnswer> answers = new ArrayList<>(); // create list for answers
-        GRNchecker grn = new GRNchecker(); // create checker
 
-        grn.setPerson(so.getHusband());
-        System.out.print("Husband // ");
-        answers.add(grn.check());
+        ExecutorService es = Executors.newFixedThreadPool(10);
+        List<Future<CheckAnswer>> result = new ArrayList<>(); // establish a list of result objects
 
-        grn.setPerson(so.getWife());
-        System.out.print("           Wife // ");
-        answers.add(grn.check());
+        GRNchecker grnH = new GRNchecker(so.getHusband());
+        result.add(es.submit(grnH));
+
+        GRNchecker grnW = new GRNchecker(so.getWife());
+        result.add(es.submit(grnW));
 
         for (PersonChild pc : so.getChildren()) {
-            grn.setPerson(pc);
-            System.out.print("           Child // ");
-            answers.add(grn.check());
+            GRNchecker grnC = new GRNchecker(pc);
+            result.add(es.submit(grnC));
         }
 
+        for (Future<CheckAnswer> f : result) { //convert result list to answer list
+            try {
+                CheckAnswer answer = f.get();
+                answers.add(answer);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        es.shutdown();
         return answers;
+
     }
 
     private List<CheckAnswer> checkZAGS(StudentOrder so) throws CheckException {
