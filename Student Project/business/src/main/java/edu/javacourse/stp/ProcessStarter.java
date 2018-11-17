@@ -46,10 +46,10 @@ public class ProcessStarter {
         try {
             System.out.print("\n" + "Check GRN: ");
             answers.addAll(checkGRN(so));
-//            System.out.print("\n"+"Check ZAGS: ");
-//            answers.addAll(checkZAGS(so));
-//            System.out.print("\n"+"Check Students: ");
-//            answers.addAll(checkStudents(so));
+            System.out.print("\n"+"Check ZAGS: ");
+            answers.addAll(checkZAGS(so));
+            System.out.print("\n"+"Check Students: ");
+            answers.addAll(checkStudents(so));
         } catch (CheckException e) {
             // TODO Make Exception processing
             return;

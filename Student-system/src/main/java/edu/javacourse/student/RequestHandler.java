@@ -63,7 +63,8 @@ public class RequestHandler implements Runnable {
         socket.close();
     }
 
-    private boolean checkPerson(StudentPerson person) {
+    private boolean checkPerson(StudentPerson person) throws InterruptedException {
+        Thread.sleep(1000);
         return true;
     }
 

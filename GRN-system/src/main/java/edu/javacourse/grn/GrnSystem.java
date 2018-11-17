@@ -22,10 +22,8 @@ public class GrnSystem {
                 RequestHandler rh = new RequestHandler(socket);
                 new Thread(rh).start();
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }
