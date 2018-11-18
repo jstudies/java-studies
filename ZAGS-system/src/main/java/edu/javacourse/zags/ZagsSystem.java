@@ -15,7 +15,6 @@ public class ZagsSystem {
             ServerSocket ses = new ServerSocket(7779); // setup incoming socket
 
             System.out.println(this.getClass() + " is listening at " + ses);
-            System.out.println("\n");
             System.out.println("---");
 
             while (true) {

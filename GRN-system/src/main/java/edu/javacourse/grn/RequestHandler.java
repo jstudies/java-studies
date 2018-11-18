@@ -41,13 +41,14 @@ public class RequestHandler implements Runnable {
         }
 
         System.out.println(sb.toString()); // show what's read
-        System.out.println("---");
 
         boolean result;
         String message;
         try {
             GrnPerson person = buildPerson(sb.toString()); // calling for GrnPerson, sending sb.toString(), requesting 'person'
-//            System.out.println("Checking: " + person + "\n");
+
+            System.out.println(person);
+
             result = checkPerson(person);
             message = "GRN @ CONFIRMED";
         } catch (Exception e) {
@@ -64,7 +65,7 @@ public class RequestHandler implements Runnable {
     }
 
     private boolean checkPerson(GrnPerson person) throws InterruptedException {
-        Thread.sleep(1000);
+//        Thread.sleep(1000);
         return true;
     }
 

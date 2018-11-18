@@ -11,8 +11,7 @@ package edu.javacourse.stp;
 import edu.javacourse.stp.checkers.GRNchecker;
 import edu.javacourse.stp.checkers.StudentChecker;
 import edu.javacourse.stp.checkers.ZAGSchecker;
-import edu.javacourse.stp.db.FactoryDataSource;
-import edu.javacourse.stp.db.StudentOrderDataSource;
+import edu.javacourse.stp.db.ReadXmlForSo;
 import edu.javacourse.stp.domain.PersonChild;
 import edu.javacourse.stp.domain.StudentOrder;
 import edu.javacourse.stp.domain.answer.CheckAnswer;
@@ -32,23 +31,23 @@ public class ProcessStarter {
     }
 
     private void processList() {
-        StudentOrderDataSource ds = FactoryDataSource.getDataSource();
-        List<StudentOrder> orderList = ds.getStudentOrders();
+        List<StudentOrder> orderList = ReadXmlForSo.getStudentOrders();
+
         for (StudentOrder so : orderList) {
+            System.out.println("SO: "+so.getId());
             processStudentOrder(so); // for every element in the created list process the following function
         }
-
     }
 
     private void processStudentOrder(StudentOrder so) {
         List<CheckAnswer> answers = new ArrayList<>(); // creating the list of answers; TODO Make it return answers as list and put it in the file
 
         try {
-            System.out.print("\n" + "Check GRN: " + "\n");
+            System.out.print("Check GRN: " + "\n");
             answers.addAll(checkGRN(so));
-            System.out.print("\n" + "Check ZAGS: " + "\n");
+            System.out.print("Check ZAGS: " + "\n");
             answers.addAll(checkZAGS(so));
-            System.out.print("\n" + "Check Students: " + "\n");
+            System.out.print("Check Students: " + "\n");
             answers.addAll(checkStudents(so));
         } catch (CheckException e) {
             // TODO Make Exception processing
@@ -76,6 +75,7 @@ public class ProcessStarter {
 
         GRNchecker grnH = new GRNchecker(so.getHusband());
         result.add(es.submit(grnH));
+
         GRNchecker grnW = new GRNchecker(so.getWife());
         result.add(es.submit(grnW));
 

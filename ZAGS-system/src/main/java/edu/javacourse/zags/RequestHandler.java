@@ -45,12 +45,14 @@ public class RequestHandler implements Runnable {
             System.out.println("Requested: 'children status'");
         }
         System.out.println(sb.toString()); // show what's read
-        System.out.println("---");
+
         boolean result;
         String message;
         try {
             ZagsPerson person = buildPerson(sb.toString()); // calling for ZagsPerson, sending sb.toString(), requesting 'person'
-            System.out.println("Checking: " + person + "\n");
+
+//            System.out.println(person);
+
             result = checkPerson(person);
             message = "ZAGS @ CONFIRMED";
         } catch (Exception e) {

@@ -46,8 +46,9 @@ public class RequestHandler implements Runnable {
         String message;
         try {
             StudentPerson person = buildPerson(sb.toString()); // calling for StudentPerson, sending sb.toString(), requesting 'person'
+
             System.out.println(person);
-            System.out.println("---");
+
             result = checkPerson(person);
             message = "Students @ CONFIRMED";
         } catch (Exception e) {

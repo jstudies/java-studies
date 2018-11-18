@@ -50,7 +50,7 @@ public class FakeDataSource implements StudentOrderDataSource {
             // add to the list
             children.add(c);
         }
-        StudentOrder so = new StudentOrder(h, w, children);
+        StudentOrder so = new StudentOrder(h, w, children,115);
         return so;
     }
 }

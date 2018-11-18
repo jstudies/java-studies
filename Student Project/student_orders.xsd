@@ -10,14 +10,14 @@
         </xs:sequence>
     </xs:complexType>
 
-    <xs:comlexType name="student-order">
+    <xs:complexType name="student-order">
         <xs:sequence>
             <xs:element type="personAdult" name="husband"/>
             <xs:element type="personAdult" name="wife"/>
             <xs:element type="children" name="children"/>
         </xs:sequence>
         <xs:attribute type="xs:string" name="so-id" use="required"/>
-    </xs:comlexType>
+    </xs:complexType>
 
     <xs:complexType name="person">
         <xs:sequence>
@@ -54,5 +54,6 @@
         <xs:sequence>
             <xs:element type="personChild" name="child" maxOccurs="unbounded" minOccurs="0"/>
         </xs:sequence>
+        <xs:attribute type="xs:string" name="ch-qty" use="required"/>
     </xs:complexType>
 </xs:schema>

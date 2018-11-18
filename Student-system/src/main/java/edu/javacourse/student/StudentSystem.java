@@ -14,7 +14,6 @@ public class StudentSystem {
             ServerSocket ses = new ServerSocket(7778); // setup incoming socket
 
             System.out.println(this.getClass() + " is listening at " + ses);
-            System.out.println("\n");
             System.out.println("---");
 
             while (true) {

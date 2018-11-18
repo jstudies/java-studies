@@ -15,11 +15,13 @@ public class StudentOrder implements Serializable {
     private PersonAdult husband;
     private PersonAdult wife;
     private List<PersonChild> children;
+    private int id;
 
-    public StudentOrder(PersonAdult husband, PersonAdult wife, List<PersonChild> children) {
+    public StudentOrder(PersonAdult husband, PersonAdult wife, List<PersonChild> children,int id) {
         this.husband = husband;
         this.wife = wife;
         this.children = children;
+        this.id=id;
     }
 
     public PersonAdult getHusband() {
@@ -32,5 +34,9 @@ public class StudentOrder implements Serializable {
 
     public List<PersonChild> getChildren() {
         return children;
+    }
+
+    public int getId() {
+        return id;
     }
 }
