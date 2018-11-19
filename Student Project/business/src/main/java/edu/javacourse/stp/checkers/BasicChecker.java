@@ -15,6 +15,8 @@ import edu.javacourse.stp.exception.ConnectException;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public abstract class BasicChecker {
 
@@ -56,7 +58,6 @@ public abstract class BasicChecker {
         try {
             socket = new Socket(host, port);
         } catch (IOException e) {
-            e.printStackTrace();
             throw new ConnectException(e.getMessage(), e);
         }
     }

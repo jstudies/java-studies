@@ -18,63 +18,65 @@ import java.util.*;
 public class ReadXmlForSo {
 
     public static List<StudentOrder> getStudentOrders() {
+        List<StudentOrder> so = new ArrayList<>(); // create array for SOs
         try {
-            List<StudentOrder> so = new ArrayList<>();
-            DocumentBuilder docBuild = DocumentBuilderFactory.newInstance().newDocumentBuilder();
-            Document XMLdoc = docBuild.parse("student_orders.xml");
-            Node root = XMLdoc.getDocumentElement();
-            List<Integer> ids = extractOrdersID(root);
+            DocumentBuilder docBuild = DocumentBuilderFactory.newInstance().newDocumentBuilder(); // launching DocumentBuilder proccess
+            Document XMLdoc = docBuild.parse("student_orders.xml"); // parsing the orders file
+            Node root = XMLdoc.getDocumentElement(); // set root
+            List<Integer> ids = extractOrdersID(root); // create array and fill it with list of SO ID's, read by extractOrdersID func
 
-            for (Integer id : ids) {
-                int p = extractChildrenQty(root, id);
-                so.add(getStudentOrder(root, id, p));
+            for (Integer id : ids) { // processing each SO
+                int p = extractChildrenQty(root, id); // extracting qty of children attribute
+                so.add(getStudentOrder(root, id, p)); // add to the SO list a new SO created by getStudentOrderSO function
             }
-            return so;
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return so; // return SO
     }
 
-    private static StudentOrder getStudentOrder(Node root, Integer id, int p) {
-        PersonAdult h = null;
+    private static StudentOrder getStudentOrder(Node root, Integer id, int p) { // fill SO
+        PersonAdult h = null; // set variables
         PersonAdult w = null;
         List<PersonChild> children = new ArrayList<>();
 
         try {
             // making grown-ups
-            for (int i = 0; i < 2; i++) {
+            for (int i = 0; i < 2; i++) { // cycle twice
                 if (i == 0) {
-                    h = makePerson(root, id, i);
+                    h = makePerson(root, id, i); // call makePerson function, send the root node it, so id, person type ID
                 } else {
                     w = makePerson(root, id, i);
                 }
             }
             // making kids
-            for (int i = 1; i < p + 1; i++) {
-                children.add(makeChild(root, id, i));
+            for (int i = 1; i < p + 1; i++) { // cycle makeChild function till it reaches set qty
+                children.add(makeChild(root, id, i)); //make child
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        System.out.println(w.getSurName());
-        StudentOrder so = new StudentOrder(h, w, children, id);
-        return so;
+        StudentOrder so = new StudentOrder(h, w, children, id); // create SO
+        return so; // return SO
     }
+
+    // extract SO ID attributes
 
     private static List<Integer> extractOrdersID(Node root) throws XPathExpressionException {
         XPathFactory pf = XPathFactory.newInstance(); // initiate XPath
-        XPath xp = pf.newXPath();
+        XPath xp = pf.newXPath(); // new XPath function
         List<Integer> result = new ArrayList<>(); // make list
         XPathExpression expr = xp.compile("student-order"); // set expression to search
         NodeList nodes = (NodeList) expr.evaluate(root, XPathConstants.NODESET); // load nodes
-        for (int i = 0; i < nodes.getLength(); i++) {
+        for (int i = 0; i < nodes.getLength(); i++) { // cycle till reach the qty of nodes
             Node n = nodes.item(i); // assign node to n
             int id = Integer.parseInt(((Element) n).getAttribute("so-id")); // parse for attribute so-id
             result.add(id); // add result to the list
         }
-        return result;
+        return result; // return the list of order IDs
     }
+
+    // extract children qty attribute
 
     private static int extractChildrenQty(Node root, Integer id) throws XPathExpressionException {
         XPathFactory pf = XPathFactory.newInstance(); // initiate XPath
@@ -88,8 +90,10 @@ public class ReadXmlForSo {
         return qty;
     }
 
-    private static PersonAdult makePerson(Node root, Integer id, int p) throws XPathExpressionException {
+    // make adult person
 
+    private static PersonAdult makePerson(Node root, Integer id, int p) throws XPathExpressionException {
+        // who are we making?
         String type;
         if (p == 0) {
             type = "husband";
@@ -97,16 +101,16 @@ public class ReadXmlForSo {
             type = "wife";
         }
 
-        PersonAdult person = new PersonAdult();
+        PersonAdult person = new PersonAdult(); // new PersonAdult function
         XPathFactory pf = XPathFactory.newInstance(); // initiate XPath
-        XPath xp = pf.newXPath();
+        XPath xp = pf.newXPath(); // new XPath function
         String who = String.format("student-order[@so-id='%d']/" + type, id); // which instance to stop at
-        XPathExpression expr = xp.compile(who);
+        XPathExpression expr = xp.compile(who); // compile the node data
         Node nodes = (Node) expr.evaluate(root, XPathConstants.NODE); // load nodes
-        NodeList names = nodes.getChildNodes();
+        NodeList names = nodes.getChildNodes(); // look into child nodes
 
         for (int i = 0; i < names.getLength(); i++) {
-            Node name = names.item(i);
+            Node name = names.item(i); // select node item with index 'i'
             if (name instanceof Element) {
                 if ("surName".equals(name.getNodeName())) {
                     person.setSurName(name.getTextContent().trim());
@@ -137,7 +141,8 @@ public class ReadXmlForSo {
     private static PersonChild makeChild(Node root, Integer id, int p) throws XPathExpressionException {
         PersonChild person = new PersonChild();
         XPathFactory pf = XPathFactory.newInstance(); // initiate XPath
-        XPath xp = pf.newXPath();
+        XPath xp = pf.newXPath(); // new XPath function
+        // select proper child node with index 'p':
         String who = String.format("student-order[@so-id='%d']/children/child[" + p + "]", id);
         XPathExpression expr = xp.compile(who); // set expression to search
         Node nodes = (Node) expr.evaluate(root, XPathConstants.NODE); // load nodes
@@ -169,6 +174,6 @@ public class ReadXmlForSo {
                 }
             }
         }
-        return person;
+        return person; // return person
     }
 }
