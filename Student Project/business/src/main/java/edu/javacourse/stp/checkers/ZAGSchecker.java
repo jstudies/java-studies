@@ -48,17 +48,17 @@ public class ZAGSchecker extends BasicChecker implements Callable<CheckAnswer> {
         this.child=child;
     }
 
-    public void setParameters(Person husband, Person wife, Person child) {
-        this.husband = husband;
-        this.wife = wife;
-        this.child = child;
-    }
+//    public void setParameters(Person husband, Person wife, Person child) {
+//        this.husband = husband;
+//        this.wife = wife;
+//        this.child = child;
+//    }
     @Override
     public CheckAnswer call() throws Exception {
         return check();
     }
 
-    protected CheckAnswer sendAndGetData() throws SendGetDataException {
+    protected synchronized CheckAnswer sendAndGetData() throws SendGetDataException {
         try {
             OutputStream os = socket.getOutputStream();
             StringBuilder sb = new StringBuilder(buildXml());

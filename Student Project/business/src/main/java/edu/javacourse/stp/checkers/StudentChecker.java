@@ -49,7 +49,7 @@ public class StudentChecker extends BasicChecker implements Callable<CheckAnswer
         return check();
     }
 
-    protected CheckAnswer sendAndGetData() throws SendGetDataException {
+    protected synchronized CheckAnswer sendAndGetData() throws SendGetDataException {
         try {
             OutputStream os = socket.getOutputStream();
             StringBuilder sb = new StringBuilder(buildXmlForPerson());

@@ -58,7 +58,7 @@ public class GRNchecker extends BasicChecker implements Callable<CheckAnswer> {
         return check();
     }
 
-    protected CheckAnswer sendAndGetData() throws SendGetDataException {
+    protected synchronized CheckAnswer sendAndGetData() throws SendGetDataException {
         try {
             OutputStream os = socket.getOutputStream(); // stream to be sent
             StringBuilder sb = new StringBuilder(buildXmlForPerson());
@@ -98,7 +98,6 @@ public class GRNchecker extends BasicChecker implements Callable<CheckAnswer> {
 
         xml.writeStartElement("surName");
         xml.writeCharacters(person.getSurName());
-        xml.writeEndElement();
         xml.writeStartElement("givenName");
         xml.writeCharacters(person.getGivenName());
         xml.writeEndElement();
