@@ -36,36 +36,15 @@ public class ReadXmlForSo {
     }
 
     private static StudentOrder getStudentOrder(Node root, Integer id, int p) throws Exception { // fill SO
-//        PersonAdult h = null; // set variables
-//        PersonAdult w = null;
         List<PersonChild> children = new ArrayList<>();
 
-        PersonAdult h= makePerson(root, id, 0); // call makePerson function, send the root node it, so
-        PersonAdult w = makePerson(root, id, 1);
+        PersonAdult h = makePerson(root, id, "husband"); // call makePerson function, send the root node it, so
+        PersonAdult w = makePerson(root, id, "wife");
 
         for (int i = 1; i < p + 1; i++) { // cycle makeChild function till it reaches set qty
             children.add(makeChild(root, id, i)); //make child
         }
 
-        try {
-
-
-            // making grown-ups
-//            for (int i = 0; i < 2; i++) { // cycle twice
-//                if (i == 0) {
-//                    h = makePerson(root, id, i); // call makePerson function, send the root node it, so
-//                     id, person type ID
-//                } else {
-//                    w = makePerson(root, id, i);
-//                }
-//            }
-            // making kids
-//            for (int i = 1; i < p + 1; i++) { // cycle makeChild function till it reaches set qty
-//                children.add(makeChild(root, id, i)); //make child
-//            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         StudentOrder so = new StudentOrder(h, w, children, id); // create SO
         return so; // return SO
     }
@@ -102,15 +81,7 @@ public class ReadXmlForSo {
 
     // make adult person
 
-    private static PersonAdult makePerson(Node root, Integer id, int p) throws XPathExpressionException {
-        // who are we making?
-        String type;
-        if (p == 0) {
-            type = "husband";
-        } else {
-            type = "wife";
-        }
-
+    private static PersonAdult makePerson(Node root, Integer id, String type) throws XPathExpressionException {
         PersonAdult person = new PersonAdult(); // new PersonAdult function
         XPathFactory pf = XPathFactory.newInstance(); // initiate XPath
         XPath xp = pf.newXPath(); // new XPath function

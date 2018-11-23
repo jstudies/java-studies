@@ -46,7 +46,7 @@
             <number>456789</number>
             <dateOfIssue>20.11.2009</dateOfIssue>
         </wife>
-        <children ch-qty="1">
+        <children ch-qty="2">
             <child>
                 <surName>Иванова</surName>
                 <givenName>Ирина</givenName>
