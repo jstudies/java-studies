@@ -3,6 +3,7 @@ out
 .idea/
 .DS_Store
 .gradle
+*.code-workspace
 
 ### Graddle ###
 
